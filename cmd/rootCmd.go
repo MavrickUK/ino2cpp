@@ -17,9 +17,12 @@ var (
 	inoFilename string
 
 	rootCmd = &cobra.Command{
-		Use:     "ino2cpp",
-		Short:   "Convert Arduino INO sketches to C++",
-		Long:    `Convert Arduino INO sketches to C++.`,
+		Use:   "ino2cpp",
+		Short: "Convert Arduino INO sketches to C++",
+		Long: `Arduino sketches and C++ are very similar.
+However, an INO file cannot be compiled as-is by C/C++ compilers (e.g. GCC).
+This tool converts INO sketches to C++ code such that off-the-shelf compilers and static analysis tools can be executed on the code.
+`,
 		Example: "ino2cpp -i example.ino",
 
 		// Uncomment the following line if your bare application
