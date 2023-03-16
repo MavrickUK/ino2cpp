@@ -12,10 +12,13 @@ const (
 	cVERSION = "0.1"
 )
 
-// rootCmd represents the base command when called without any subcommands
 var (
 	inoFilename string
+	outFilename string
+)
 
+// rootCmd represents the base command when called without any subcommands
+var (
 	rootCmd = &cobra.Command{
 		Use:   "ino2cpp",
 		Short: "Convert Arduino INO sketches to C++",
@@ -28,18 +31,24 @@ This tool converts INO sketches to C++ code such that off-the-shelf compilers an
 		// Uncomment the following line if your bare application
 		// has an action associated with it:
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Printf("Ino2Cpp Converter v%s\n", cVERSION)
+			output, _ := cmd.Flags().GetString("output")
+			if output != "" {
+				processOutputFile(outFilename)
+			}
+
 			startParsing(inoFilename)
 		},
 		Version: cVERSION,
 	}
 )
 
+func processOutputFile(outFilename string) {
+	fmt.Println("Running output from flag. ", outFilename)
+}
+
 func startParsing(fn string) {
 	p := parser.NewParse(fn)
-	fmt.Println("Working, please wait...")
-	p.Start()
-	//fmt.Println("Done.")
+	p.Start(cVERSION)
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -52,6 +61,10 @@ func Execute() {
 }
 
 func init() {
-	//rootCmd.PersistentFlags().StringP("author", "a", "YOUR NAME", "author name for copyright attribution")
 	rootCmd.PersistentFlags().StringVarP(&inoFilename, "input", "i", "", "name of .ino file to convert.")
+	err := rootCmd.MarkPersistentFlagRequired("input")
+	if err != nil {
+		return
+	}
+	rootCmd.PersistentFlags().StringVarP(&outFilename, "output", "o", "", "output filename.")
 }

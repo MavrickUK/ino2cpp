@@ -29,9 +29,13 @@ func NewParse(fname string) *Parse {
 	return p
 }
 
-func (p *Parse) Start() {
-	//fmt.Printf("File: %s - %#v\n", p.sourceName, p)
+func printHeader(appVersion string) {
+	fmt.Printf("Ino2Cpp Converter v%s\n", appVersion)
+	fmt.Println("Working, please wait...")
+}
 
+func (p *Parse) Start(appVersion string) {
+	printHeader(appVersion)
 	content, err := os.ReadFile(p.sourceName + ".ino")
 	if err != nil {
 		fmt.Println("Error reading file:", err)
@@ -39,10 +43,8 @@ func (p *Parse) Start() {
 	}
 
 	input := string(content)
-
-	//pattern := `(void\s+[a-zA-Z0-9_]+\s*\(\s*\))\s*\{`
 	pattern := cREGEX
-	//repl := "$1;"
+
 	r := regexp.MustCompile(pattern)
 	matches := r.FindAllStringSubmatch(input, -1)
 	for _, match := range matches {
