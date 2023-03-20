@@ -43,28 +43,32 @@ func (p *Parse) Start(appVersion string) {
 		return
 	}
 
-	matchFunctions(content)
+	matchFunctions(content, p.verboseOutput)
 
-	p.createHeader(p.sourceFilename)
+	p.createHeader(p.outputFilename)
 	p.modifySourceFile(p.sourceFilename)
-	fmt.Printf("Done!\n%s and %s created.", p.sourceFilename+".cpp", p.sourceFilename+".h")
+	fmt.Printf("%s.cpp and %s.h created. Done!\n", p.outputFilename, p.outputFilename)
 }
 
-func matchFunctions(content []byte) {
+func matchFunctions(content []byte, verbose bool) {
 	input := string(content)
 	pattern := cREGEX
-
+	var funcsFound int
 	r := regexp.MustCompile(pattern)
 	matches := r.FindAllStringSubmatch(input, -1)
 	for _, match := range matches {
 		if len(match) > 1 {
 			if !((strings.Contains(match[1], "setup")) ||
 				(strings.Contains(match[1], "loop"))) {
-				//fmt.Println(match[1] + ";")
+				if verbose {
+					fmt.Println("  " + match[1] + ";")
+				}
 				lines = append(lines, match[1]+";")
+				funcsFound++
 			}
 		}
 	}
+	fmt.Printf("Funcs exported: %d\n", funcsFound)
 }
 
 // Creates the .h file containing all our exported functions
@@ -102,7 +106,7 @@ func (p *Parse) modifySourceFile(fn string) {
 
 		}
 	}(file)
-	outputFile, err := os.Create(p.sourceFilename + ".cpp")
+	outputFile, err := os.Create(p.outputFilename + ".cpp")
 	//outputFile, err := os.Create("output.txt")
 	if err != nil {
 		log.Fatal(err)
@@ -121,7 +125,10 @@ func (p *Parse) modifySourceFile(fn string) {
 		contents += scanner.Text() + "\n"
 	}
 	// Prepend the two lines of text
-	newContents := cARDUINOH + "\n" + `#include "` + p.sourceFilename + ".h" + `"` +
+	if p.verboseOutput {
+		fmt.Printf("Added: %s and #include \"%s.h\" to %s.cpp\n", cARDUINOH, p.outputFilename, p.outputFilename)
+	}
+	newContents := cARDUINOH + "\n" + `#include "` + p.outputFilename + ".h" + `"` +
 		"\n\n" + contents
 
 	// Write the updated contents of the file to the beginning

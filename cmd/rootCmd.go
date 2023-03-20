@@ -11,7 +11,7 @@ import (
 
 const (
 	AppName         = "ino2cpp"
-	AppVersion      = "0.1" //TODO: Update BEFORE release/push
+	AppVersion      = "0.2" //TODO: Update BEFORE release/push
 	BuildDate       = "20 Mar 2023"
 	cFilenameSuffix = ".ino"
 	GitHubRepo      = "https://github.com/MavrickUK/ino2cpp"
@@ -26,7 +26,7 @@ var (
 // rootCmd represents the base command when called without any subcommands
 var (
 	rootCmd = &cobra.Command{
-		Use:   "ino2cpp <filename> [-o <filename>]",
+		Use:   "ino2cpp <filename> [-o <filename>] [-v]",
 		Short: "Convert Arduino INO sketches to C++",
 		Long: `Arduino sketches and C++ are very similar.
 However, an INO file cannot be compiled as-is by C/C++ compilers (e.g. GCC).
@@ -34,31 +34,24 @@ This tool converts INO sketches to C++ code such that off-the-shelf compilers an
 `,
 		Example: `
   ino2cpp example.ino
-  ino2cpp example.ino -o new_file
+  ino2cpp example.ino -o new_filename
   ino2cpp example.ino -v`,
 		Args: cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			inoFile := args[0]
-			output, _ := cmd.Flags().GetString("output")
-			if output != "" {
-				processOutputFile(outFilename) //TODO: Add function to do the processing
-			}
-			test := utils.RemoveInvalidFilenameChars(inoFile)
-			processOutputFile(test) //TODO: Remove the processOutFile function.
-			//startParsing(inoFilename)
+			startParsing(args[0]) // This should be the provided ino filename
 		},
 		Version: AppVersion,
 	}
 )
 
-func processOutputFile(outputFilename string) {
-	fmt.Println("Running output from flag. ", outputFilename)
-}
-
 func startParsing(fn string) {
-	if !strings.HasSuffix(fn, cFilenameSuffix) {
-		fn += cFilenameSuffix
+	fn = utils.RemoveInvalidFilenameChars(fn)
+	fn = strings.TrimSuffix(fn, cFilenameSuffix)
+
+	if outFilename == "" {
+		outFilename = fn
 	}
+
 	p := parser.NewParse(fn, outFilename, verbose)
 	p.Start(AppVersion)
 }

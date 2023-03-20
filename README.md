@@ -21,10 +21,26 @@ There are three steps in this conversion [1][2]:****
 Portable, just download the latest release version and run the .exe from where you unzipped.
 
 ## Usage
-
 ```
-ino2cpp -i [filename of .ino]
+ino2cpp <filename> [-o <filename>] [-v]
+ino2cpp uno_led.ino
 ino2cpp -h
+```
+
+## Example
+```
+➜ .\ino2cpp.exe uno_led.ino -v
+Ino2Cpp Converter v0.2
+Working, please wait...
+  void update_started();
+  void update_finished();
+  void update_progress(int cur, int total);
+  void update_error(int err);
+  void otaUpdate(String url);
+  void check_for_updates();
+Funcs exported: 6
+Added: #include <Arduino.h> and #include "uno_led.h" to uno_led.cpp
+uno_led.cpp and uno_led.h created. Done!
 ```
 
 ## Contributing

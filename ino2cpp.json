@@ -1,0 +1,23 @@
+{
+  "version": "0.1",
+  "description": "ino2cpp helps convert .ino files to c++",
+  "homepage": "https://github.com/MavrickUK/ino2cpp",
+  "license": "GPL-2.0-or-later",
+  "architecture": {
+    "64bit": {
+      "url": "https://github.com/MavrickUK/ino2cpp/releases/download/v0.1/ino2cpp-0.1-win64.7z",
+      "hash": "c7272cbf1ac2f5acc19297d0e4fbab934043e4574516eefa5cbff92d28359c9b"
+    }
+  },
+  "bin": "ino2cpp.exe",
+  "checkver": {
+    "github": "https://github.com/MavrickUK/ino2cpp"
+  },
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://github.com/MavrickUK/ino2cpp/releases/download/v$version/ino2cpp-$version-win64.zip"
+      }
+    }
+  }
+}
