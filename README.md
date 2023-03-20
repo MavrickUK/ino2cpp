@@ -18,11 +18,17 @@ There are three steps in this conversion [1][2]:****
 
 ## Installation
 Portable, just download the latest release version and run the .exe from where you unzipped.
-Or you can use **Scoop** package manager and install with:
->scoop bucket add ino2cpp https://github.com/MavrickUK/ino2cpp
-> 
->scoop install ino2cpp
->
+**Or** you can use **Scoop** package manager and install with:
+1. Install [scoop](https://github.com/lukesampson/scoop)
+2. Add this bucket to scoop:
+```bash
+scoop bucket add ino2cpp https://github.com/MavrickUK/ino2cpp
+```
+3. Install tools via `scoop install`:
+```bash
+scoop install ino2cpp
+```
+4. You're done.
 ## Usage
 ```
 ino2cpp <filename> [-o <filename>] [-v]
