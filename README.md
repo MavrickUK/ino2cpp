@@ -17,9 +17,12 @@ There are three steps in this conversion [1][2]:****
 3. **Write C++ to disk**. Write the resulting C++ and header file to disk. INO is unchanged!
 
 ## Installation
-
 Portable, just download the latest release version and run the .exe from where you unzipped.
-
+Or you can use **Scoop** package manager and install with:
+>scoop bucket add ino2cpp https://github.com/MavrickUK/ino2cpp
+> 
+>scoop install ino2cpp
+>
 ## Usage
 ```
 ino2cpp <filename> [-o <filename>] [-v]
