@@ -1,6 +1,4 @@
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
-github.com/go-clang/clang-v15 v0.0.0-20230222085438-ee3102fa0c71 h1:gXlg4/q29AOo0gVARaK3LxsjP0md+Ugovk02J8yI8D4=
-github.com/go-clang/clang-v15 v0.0.0-20230222085438-ee3102fa0c71/go.mod h1:mVo0vKBuX8TWkoMpROywGoG9IpIXCCoHp2VQ7IRsVT8=
 github.com/inconshreveable/mousetrap v1.0.1/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=
 github.com/inconshreveable/mousetrap v1.1.0 h1:wN+x4NVGpMsO7ErUn/mUI3vEoE6Jt13X2s0bqwp9tc8=
 github.com/inconshreveable/mousetrap v1.1.0/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=

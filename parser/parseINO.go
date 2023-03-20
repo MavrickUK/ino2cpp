@@ -19,29 +19,38 @@ const (
 var lines []string
 
 type Parse struct {
-	sourceName string
+	sourceFilename string
+	outputFilename string
+	verboseOutput  bool
 }
 
-func NewParse(fname string) *Parse {
+func NewParse(fname string, oname string, verbose bool) *Parse {
 	p := &Parse{
-		sourceName: strings.TrimSuffix(filepath.Base(fname), filepath.Ext(fname)),
+		sourceFilename: strings.TrimSuffix(filepath.Base(fname), filepath.Ext(fname)),
+		outputFilename: oname,
+		verboseOutput:  verbose,
 	}
 	return p
 }
 
-func printHeader(appVersion string) {
+func (p *Parse) Start(appVersion string) {
 	fmt.Printf("Ino2Cpp Converter v%s\n", appVersion)
 	fmt.Println("Working, please wait...")
-}
 
-func (p *Parse) Start(appVersion string) {
-	printHeader(appVersion)
-	content, err := os.ReadFile(p.sourceName + ".ino")
+	content, err := os.ReadFile(p.sourceFilename + ".ino")
 	if err != nil {
 		fmt.Println("Error reading file:", err)
 		return
 	}
 
+	matchFunctions(content)
+
+	p.createHeader(p.sourceFilename)
+	p.modifySourceFile(p.sourceFilename)
+	fmt.Printf("Done!\n%s and %s created.", p.sourceFilename+".cpp", p.sourceFilename+".h")
+}
+
+func matchFunctions(content []byte) {
 	input := string(content)
 	pattern := cREGEX
 
@@ -56,13 +65,9 @@ func (p *Parse) Start(appVersion string) {
 			}
 		}
 	}
-
-	p.createHeader(p.sourceName)
-	p.modifySourceFile(p.sourceName)
-	fmt.Printf("Done!\n%s and %s created.", p.sourceName+".cpp", p.sourceName+".h")
 }
 
-// Creates the .h file containg all our exported functions
+// Creates the .h file containing all our exported functions
 func (p *Parse) createHeader(fn string) {
 	// Create a file for writing
 	f, _ := os.Create(fn + ".h")
@@ -97,7 +102,7 @@ func (p *Parse) modifySourceFile(fn string) {
 
 		}
 	}(file)
-	outputFile, err := os.Create(p.sourceName + ".cpp")
+	outputFile, err := os.Create(p.sourceFilename + ".cpp")
 	//outputFile, err := os.Create("output.txt")
 	if err != nil {
 		log.Fatal(err)
@@ -116,7 +121,8 @@ func (p *Parse) modifySourceFile(fn string) {
 		contents += scanner.Text() + "\n"
 	}
 	// Prepend the two lines of text
-	newContents := cARDUINOH + "\n" + `#include "` + p.sourceName + ".h" + `"` + "\n\n" + contents
+	newContents := cARDUINOH + "\n" + `#include "` + p.sourceFilename + ".h" + `"` +
+		"\n\n" + contents
 
 	// Write the updated contents of the file to the beginning
 	_, err = outputFile.WriteAt([]byte(newContents), 0)

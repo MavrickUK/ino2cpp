@@ -5,6 +5,8 @@
 *.so
 *.dylib
 
+.goreleaser.yaml
+
 # Test binary, built with `go test -c`
 *.test
 
@@ -12,5 +14,7 @@
 *.out
 
 # Dependency directories (remove the comment below to include it)
-/.idea/
-/bin/
+.idea/
+bin/
+fb/
+dist/

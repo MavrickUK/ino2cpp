@@ -1,6 +1,8 @@
 # ino2cpp
+[![Build Status](https://github.com/tj/commander.js/workflows/build/badge.svg)](https://github.com/tj/commander.js/actions?query=workflow%3A%22build%22)
 
 Convert Arduino INO sketches to C++ by creating new .cpp and .h files
+
 
 ## Details
 
@@ -12,7 +14,7 @@ This tool converts INO sketches to C++ code such that off-the-shelf compilers an
 There are three steps in this conversion [1][2]:****
 1. **Generate forward declarations**. Arduino INO sketches allow the use of a function before its definition. The first step is to parse the INO sketch to obtain function signatures, and generate a header file with these signatures ("sketch_name.h").
 2. **Includes**. Two includes are inserted before the content of the INO sketch: #include <Arduino.h>, and #include "sketch_name.h".
-3. **Write C++ to disk**. Write the resulting C++ file to disk.
+3. **Write C++ to disk**. Write the resulting C++ and header file to disk. INO is unchanged!
 
 ## Installation
 
@@ -37,3 +39,4 @@ Please make sure to update tests as appropriate.
 
 ### License
 [MIT](https://choosealicense.com/licenses/mit/)
+****
