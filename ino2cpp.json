@@ -5,7 +5,7 @@
   "license": "GPL-2.0-or-later",
   "architecture": {
     "64bit": {
-      "url": "https://github.com/MavrickUK/ino2cpp/releases/download/v0.2/ino2cpp-0.2-win64.7z",
+      "url": "https://github.com/MavrickUK/ino2cpp/releases/download/v0.2/ino2cpp-0.2-win64.zip",
       "hash": "53d2d979c668b6c896bcd98ba58b1aca66207eac61634822bc7b5d8b228c24d6"
     }
   },
