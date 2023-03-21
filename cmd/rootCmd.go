@@ -12,7 +12,7 @@ import (
 const (
 	AppName         = "ino2cpp"
 	AppVersion      = "0.2" //TODO: Update BEFORE release/push
-	BuildDate       = "20 Mar 2023"
+	BuildDate       = "21 Mar 2023"
 	cFilenameSuffix = ".ino"
 	GitHubRepo      = "https://github.com/MavrickUK/ino2cpp"
 )
@@ -26,7 +26,7 @@ var (
 // rootCmd represents the base command when called without any subcommands
 var (
 	rootCmd = &cobra.Command{
-		Use:   "ino2cpp <filename> [-o <filename>] [-v]",
+		Use:   "ino2cpp <filename> [-o <filename>] [-i]",
 		Short: "Convert Arduino INO sketches to C++",
 		Long: `Arduino sketches and C++ are very similar.
 However, an INO file cannot be compiled as-is by C/C++ compilers (e.g. GCC).
@@ -35,7 +35,7 @@ This tool converts INO sketches to C++ code such that off-the-shelf compilers an
 		Example: `
   ino2cpp example.ino
   ino2cpp example.ino -o new_filename
-  ino2cpp example.ino -v`,
+  ino2cpp example.ino -i`,
 		Args: cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			startParsing(args[0]) // This should be the provided ino filename
@@ -67,5 +67,5 @@ func Execute() {
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&outFilename, "output", "o", "", "output filename.")
-	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "verbose mode")
+	rootCmd.PersistentFlags().BoolVarP(&verbose, "info", "i", false, "result info")
 }

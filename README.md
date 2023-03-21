@@ -56,8 +56,6 @@ uno_led.cpp and uno_led.h created. Done!
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-Please make sure to update tests as appropriate.
-
 ## References
 [1] [How to convert Arduino example sketch to a complete c++ project?](https://arduino.stackexchange.com/questions/32998/how-to-convert-arduino-example-sketch-to-a-complete-c-project)
 [2] [converting .ino files to .cpp - Arduino Forum](https://forum.arduino.cc/t/converting-ino-files-to-cpp/226366)

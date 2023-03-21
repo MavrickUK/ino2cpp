@@ -1,5 +1,6 @@
 LDFLAGS = -ldflags "-s -w"
 APPNAME = ino2cpp
+BUILD = "0.2"
 
 .DEFAULT_GOAL := run
 
@@ -16,7 +17,7 @@ vet: fmt
 .PHONY:vet
 
 build: vet
-		go build -o bin/${APPNAME}.exe main.go
+	go build -o bin/${APPNAME}.exe main.go
 .PHONY:build
 
 tiny:
@@ -31,6 +32,9 @@ comwin32:
 comwin64:
 	env GOOS=windows GOARCH=amd64 go build ${LDFLAGS} -o bin/${APPNAME}-windows-amd64.exe main.go
 
+linux:
+	env GOOS=linux GOARCH=amd64 go build -o bin/${APPNAME}-linux-amd64 main.go
+
 run: build
 	.\bin\${APPNAME}.exe
 	
@@ -38,21 +42,15 @@ update:
 	go get -u all
 
 compile:
-	# 32-Bit Systems
-	# FreeBDS
-	env GOOS=freebsd GOARCH=386 go build -o bin/${APPNAME}-freebsd-386 main.go
+	# 64-Bit
+	#
+# FreeBDS
+# env GOOS=freebsd GOARCH=amd64 go build -o bin/${APPNAME}-${BUILD}-freebsd-amd64 main.go
 	# MacOS
-	env GOOS=darwin GOARCH=386 go build -o bin/${APPNAME}-darwin-386 main.go
+	env GOOS=darwin GOARCH=amd64 go build ${LDFLAGS} -o bin/${APPNAME}-darwin-amd64 main.go
 	# Linux
-	env GOOS=linux GOARCH=386 go build -o bin/${APPNAME}-linux-386 main.go
+	env GOOS=linux GOARCH=amd64 go build ${LDFLAGS} -o bin/${APPNAME}-linux-amd64 main.go
+	upx -9 -o bin/${APPNAME}-linux-amd64_Packed bin/${APPNAME}-linux-amd64
 	# Windows
-	env GOOS=windows GOARCH=386 go build -o bin/${APPNAME}-windows-386.exe main.go
-# 64-Bit
-	# FreeBDS
-	env GOOS=freebsd GOARCH=amd64 go build -o bin/${APPNAME}-freebsd-amd64 main.go
-	# MacOS
-	env GOOS=darwin GOARCH=amd64 go build -o bin/${APPNAME}-darwin-amd64 main.go
-	# Linux
-	env GOOS=linux GOARCH=amd64 go build -o bin/${APPNAME}-linux-amd64 main.go
-	# Windows
-	env GOOS=windows GOARCH=amd64 go build -o bin/${APPNAME}-windows-amd64.exe main.go
+	env GOOS=windows GOARCH=amd64 go build ${LDFLAGS} -o bin/${APPNAME}-windows-amd64.exe main.go
+	upx -9 -o bin/${APPNAME}-windows-amd64_Packed.exe bin/${APPNAME}-windows-amd64.exe
