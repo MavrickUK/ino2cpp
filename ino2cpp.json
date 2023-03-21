@@ -5,8 +5,8 @@
   "license": "GPL-2.0-or-later",
   "architecture": {
     "64bit": {
-      "url": "https://github.com/MavrickUK/ino2cpp/releases/download/v0.2/ino2cpp-0.2-win64.zip",
-      "hash": "53d2d979c668b6c896bcd98ba58b1aca66207eac61634822bc7b5d8b228c24d6"
+      "url": "https://github.com/MavrickUK/ino2cpp/releases/download/v0.2/ino2cpp-0.2-windows-amd64.zip",
+      "hash": "0a55c7d88ea88e3b49510b9d3849a58c7675dd57c7d358fb84454968d9ebf1ed"
     }
   },
   "bin": "ino2cpp.exe",
@@ -16,7 +16,7 @@
   "autoupdate": {
     "architecture": {
       "64bit": {
-        "url": "https://github.com/MavrickUK/ino2cpp/releases/download/v$version/ino2cpp-$version-win64.zip"
+        "url": "https://github.com/MavrickUK/ino2cpp/releases/download/v$version/ino2cpp-$version-windows-amd64.zip"
       }
     }
   }
