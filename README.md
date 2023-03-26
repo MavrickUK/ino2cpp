@@ -1,5 +1,9 @@
 # ino2cpp
-[![Build Status](https://github.com/tj/commander.js/workflows/build/badge.svg)](https://github.com/tj/commander.js/actions?query=workflow%3A%22build%22)
+[![Build Status](https://github.com/tj/commander.js/workflows/build/badge.svg)](https://github.com/tj/commander.js/actions?query=workflow%3A%22build%22)<a href="https://github.com/MavrickUK/ino2cpp/tags" rel="nofollow">
+    <img alt="GitHub tag (latest SemVer pre-release)" src="https://img.shields.io/github/v/tag/MavrickUK/ino2cpp?include_prereleases&label=version"/>
+  </a><a href="https://github.com/MavrickUK/ino2cpp/issues">
+    <img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat" alt="CodeFactor" />
+  </a>
 
 Convert Arduino INO sketches to C++ by creating new .cpp and .h files
 
@@ -22,7 +26,7 @@ Portable, just download the latest release version and run the .exe from where y
 1. Install [scoop](https://github.com/lukesampson/scoop)
 2. Add this bucket to scoop:
 ```bash
-scoop bucket add ino2cpp https://github.com/MavrickUK/ino2cpp
+scoop bucket add ino2cpp https://github.com/MavrickUK/ino2cpp/scoop
 ```
 3. Install tools via `scoop install`:
 ```bash

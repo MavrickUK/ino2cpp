@@ -1,0 +1,131 @@
+# This is an example .goreleaser.yml file with some sensible defaults.
+# Make sure to check the documentation at https://goreleaser.com
+before:
+  hooks:
+    # You may remove this if you don't use go modules.
+    - go mod tidy
+    # you may remove this if you don't need go generate
+    # - go generate ./...
+
+builds:
+  - id: "ino2cpp"
+    binary: ino2cpp
+    ldflags:
+      - -s -w
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+
+archives:
+  - format: tar.gz
+    # this name template makes the OS and Arch compatible with the results of uname.
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    # use zip for windows archives
+    format_overrides:
+    - goos: windows
+      format: zip
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+
+scoop:
+  # Template for the url which is determined by the given Token (github or gitlab)
+  # Default for github is "https://github.com/<repo_owner>/<repo_name>/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+  # Default for gitlab is "https://gitlab.com/<repo_owner>/<repo_name>/-/releases/{{ .Tag }}/downloads/{{ .ArtifactName }}"
+  # Default for gitea is "https://gitea.com/<repo_owner>/<repo_name>/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+  url_template: "https://github.com/MavrickUK/ino2cpp/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+
+  # Repository to push the app manifest to.
+  bucket:
+    # Repository owner template. (templateable)
+    owner: MavrickUK
+
+    # Repository name. (templateable)
+    name: ino2cpp
+
+    # Optionally a branch can be provided. (templateable)
+    #
+    # Defaults to the default repository branch.
+    branch: main
+
+    # Optionally a token can be provided, if it differs from the token provided
+    # to GoReleaser
+    token: "{{ .Env.SCOOP_TAP_GITHUB_TOKEN }}"
+
+  # Folder inside the repository to put the scoop.
+  # Default is the root folder.
+  folder: scoop
+
+  # Git author used to commit to the repository.
+  # Defaults are shown.
+  commit_author:
+    name: mavrick
+    email: mavrickuk@proton.me
+
+  # The project name and current git tag are used in the format string.
+  commit_msg_template: "Scoop update for {{ .ProjectName }} version {{ .Tag }}"
+
+  # Your app's homepage.
+  # Default is empty.
+  homepage: "https://github.com/MavrickUK/ino2cpp"
+
+  # Your app's description.
+  # Default is empty.
+  description: "Convert Arduino INO sketches to C++."
+
+  # Your app's license
+  # Default is empty.
+  license: MIT
+
+  # Setting this will prevent goreleaser to actually try to commit the updated
+  # manifest leaving the responsibility of publishing it to the user.
+  # If set to auto, the release will not be uploaded to the scoop bucket
+  # in case there is an indicator for prerelease in the tag e.g. v1.0.0-rc1
+  # Default is false.
+  skip_upload: true
+
+  # Persist data between application updates
+  persist:
+    - "data"
+    - "config.toml"
+
+  # An array of commands to be executed before an application is installed.
+  # Default is empty.
+  pre_install: ["Write-Host 'Running preinstall command'"]
+
+  # An array of commands to be executed after an application is installed.
+  # Default is empty.
+  post_install: ["Write-Host 'Running postinstall command'"]
+
+  # An array of dependencies.
+  # Defaults to empty.
+  # Since GoReleaser v1.16.0.
+  depends: ["git", "foo"]
+
+
+  # A two-dimensional array of string, specifies the shortcut values to make available in the startmenu.
+  # The array has to contain a executable/label pair. The third and fourth element are optional.
+  # Defaults to empty.
+  # Since GoReleaser v1.17.0.
+  #shortcuts: [["ino2cpp.exe", "ino2cpp"]]
+
+  # GOAMD64 to specify which amd64 version to use if there are multiple versions
+  # from the build section.
+  # Default is v1.
+  goamd64: v3

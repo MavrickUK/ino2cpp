@@ -5,6 +5,8 @@
 *.so
 *.dylib
 
+.goreleaser.yaml
+
 # Test binary, built with `go test -c`
 *.test
 
@@ -15,4 +17,5 @@
 .idea/
 bin/
 fb/
+dist/
 dist/

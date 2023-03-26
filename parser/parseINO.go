@@ -1,8 +1,8 @@
 package parser
 
 import (
-	"bufio"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -37,17 +37,32 @@ func (p *Parse) Start(appVersion string) {
 	fmt.Printf("Ino2Cpp Converter v%s\n", appVersion)
 	fmt.Println("Working, please wait...")
 
-	content, err := os.ReadFile(p.sourceFilename + ".ino")
-	if err != nil {
-		fmt.Println("Error reading file:", err)
-		return
+	contentChan := make(chan []byte)
+	errChan := make(chan error)
+
+	// Read the file asynchronously
+	go func() {
+		content, err := os.ReadFile(p.sourceFilename + ".ino")
+		if err != nil {
+			errChan <- fmt.Errorf("error reading file: %w", err)
+			return
+		}
+		contentChan <- content
+	}()
+
+	// Wait for the file to be read
+	select {
+	case content := <-contentChan:
+		matchFunctions(content, p.verboseOutput)
+
+		p.createHeader(p.outputFilename)
+		p.createCppFile(p.sourceFilename)
+
+		fmt.Printf("%s.cpp and %s.h created. Done!\n", p.outputFilename, p.outputFilename)
+
+	case err := <-errChan:
+		fmt.Println(err)
 	}
-
-	matchFunctions(content, p.verboseOutput)
-
-	p.createHeader(p.outputFilename)
-	p.modifySourceFile(p.sourceFilename)
-	fmt.Printf("%s.cpp and %s.h created. Done!\n", p.outputFilename, p.outputFilename)
 }
 
 func matchFunctions(content []byte, verbose bool) {
@@ -74,66 +89,57 @@ func matchFunctions(content []byte, verbose bool) {
 // Creates the .h file containing all our exported functions
 func (p *Parse) createHeader(fn string) {
 	// Create a file for writing
-	f, _ := os.Create(fn + ".h")
+	f, err := os.Create(fn + ".h")
+	if err != nil {
+		log.Fatalf("error creating file: %v", err)
+	}
+	defer f.Close()
 
-	// Create a writer
-	w := bufio.NewWriter(f)
-	//w.WriteString("// " + fn + " - HEADER FILE\n\n")
+	// Use a strings.Builder instead of a bufio.Writer
+	var b strings.Builder
 
 	for i := range lines {
-		_, err := w.WriteString(lines[i] + "\n")
+		_, err := b.WriteString(lines[i] + "\n")
 		if err != nil {
-			return
+			log.Fatalf("error writing to file: %v", err)
 		}
 	}
-	// Very important to invoke after writing a large number of lines
-	err := w.Flush()
+
+	// Write the contents of the builder to the file
+	_, err = io.WriteString(f, b.String())
 	if err != nil {
-		return
+		log.Fatalf("error writing to file: %v", err)
 	}
 }
 
 // Modify the original file and add two lines to the start
-func (p *Parse) modifySourceFile(fn string) {
-	// Open the file in read-write mode
-	file, err := os.OpenFile(fn+".ino", os.O_RDWR, 0644)
+func (p *Parse) createCppFile(fn string) {
+	inputFile, err := os.OpenFile(fn+".ino", os.O_RDONLY, 0644)
 	if err != nil {
 		panic(err)
 	}
-	defer func(file *os.File) {
-		err := file.Close()
-		if err != nil {
+	defer inputFile.Close()
 
-		}
-	}(file)
 	outputFile, err := os.Create(p.outputFilename + ".cpp")
-	//outputFile, err := os.Create("output.txt")
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
-	defer func(outputFile *os.File) {
-		err := outputFile.Close()
-		if err != nil {
+	defer outputFile.Close()
 
-		}
-	}(outputFile)
-
-	// Read the current contents of the file
-	scanner := bufio.NewScanner(file)
-	var contents string
-	for scanner.Scan() {
-		contents += scanner.Text() + "\n"
+	// Write the additional content at the beginning of the output file
+	header := []byte(cARDUINOH + "\n" + `#include "` + p.outputFilename + ".h" + `"` + "\n\n")
+	_, err = outputFile.Write(header)
+	if err != nil {
+		panic(err)
 	}
-	// Prepend the two lines of text
+
+	// Copy the contents of the input file to the output file
+	_, err = io.Copy(outputFile, inputFile)
+	if err != nil {
+		panic(err)
+	}
+
 	if p.verboseOutput {
 		fmt.Printf("Added: %s and #include \"%s.h\" to %s.cpp\n", cARDUINOH, p.outputFilename, p.outputFilename)
-	}
-	newContents := cARDUINOH + "\n" + `#include "` + p.outputFilename + ".h" + `"` +
-		"\n\n" + contents
-
-	// Write the updated contents of the file to the beginning
-	_, err = outputFile.WriteAt([]byte(newContents), 0)
-	if err != nil {
-		panic(err)
 	}
 }
