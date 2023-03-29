@@ -1,0 +1,35 @@
+{
+    "version": "0.3",
+    "architecture": {
+        "32bit": {
+            "url": "https://github.com/MavrickUK/ino2cpp/releases/download/v0.3/ino2cpp_Windows_i386.zip",
+            "bin": [
+                "ino2cpp.exe"
+            ],
+            "hash": "427b7d5b404839c24d3ff8af8283637c1ff27aa9f69eaead825b3f8c65967c74"
+        },
+        "64bit": {
+            "url": "https://github.com/MavrickUK/ino2cpp/releases/download/v0.3/ino2cpp_Windows_x86_64.zip",
+            "bin": [
+                "ino2cpp.exe"
+            ],
+            "hash": "a77c979d40e9897258fd58023a99d47a1674828e850c9c8dd2dbec09a497fe85"
+        }
+    },
+    "homepage": "https://github.com/MavrickUK/ino2cpp",
+    "license": "MIT",
+    "description": "Convert Arduino INO sketches to C++.",
+    "persist": [
+        "data",
+        "config.toml"
+    ],
+    "pre_install": [
+        "Write-Host 'Running preinstall command'"
+    ],
+    "post_install": [
+        "Write-Host 'Running postinstall command'"
+    ],
+    "depends": [
+        "git"
+    ]
+}
