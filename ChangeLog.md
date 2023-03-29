@@ -3,10 +3,15 @@
 All notable changes to this project will be documented in this file.
 If you find a bug, please open and issue in the github repo.
 
-## [] - 29-03-2023
+## [0.3] - 29-03-2023
 
 ### Added
 - builds for 32/64bit.
+
+### Fixed
+- Minor issues.
+- Some typos.
+
 
 ## [0.2] - 21-03-2023
 
@@ -25,6 +30,7 @@ If you find a bug, please open and issue in the github repo.
 ### Fixed
 - Minimum arguments. Inform user.
 - Double use of [-v] flag. Changed one into [-i].
+
 
 ## [0.1] - 15-03-2023
 

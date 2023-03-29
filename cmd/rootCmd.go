@@ -11,8 +11,8 @@ import (
 
 const (
 	AppName         = "ino2cpp"
-	AppVersion      = "0.2" //TODO: Update BEFORE release/push
-	BuildDate       = "21 Mar 2023"
+	AppVersion      = "0.3" //TODO: Update BEFORE release/push
+	BuildDate       = "29 Mar 2023"
 	cFilenameSuffix = ".ino"
 	GitHubRepo      = "https://github.com/MavrickUK/ino2cpp"
 )
