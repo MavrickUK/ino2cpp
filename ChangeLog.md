@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 If you find a bug, please open and issue in the github repo.
 
+## [] - 29-03-2023
+
+### Added
+- builds for 32/64bit.
+
 ## [0.2] - 21-03-2023
 
 ### Added

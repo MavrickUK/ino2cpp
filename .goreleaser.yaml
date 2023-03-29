@@ -18,6 +18,9 @@ builds:
       - linux
       - windows
       - darwin
+#    ignore:
+#      - goos: windows
+#        goarch: 386
 
 archives:
   - format: tar.gz
@@ -33,6 +36,11 @@ archives:
     format_overrides:
     - goos: windows
       format: zip
+    files:
+      #- LICENSE.txt
+      - README.md
+      - ChangeLog.md
+      - example/*.ino
 checksum:
   name_template: 'checksums.txt'
 snapshot:
@@ -128,4 +136,4 @@ scoop:
   # GOAMD64 to specify which amd64 version to use if there are multiple versions
   # from the build section.
   # Default is v1.
-  goamd64: v3
+  goamd64: v1
