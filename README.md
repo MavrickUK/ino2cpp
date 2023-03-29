@@ -26,7 +26,7 @@ Portable, just download the latest release version and run the .exe from where y
 1. Install [scoop](https://github.com/lukesampson/scoop)
 2. Add this bucket to scoop:
 ```bash
-scoop bucket add ino2cpp https://github.com/MavrickUK/ino2cpp/scoop
+scoop bucket add ino2cpp https://github.com/MavrickUK/ino2cpp
 ```
 3. Install tools via `scoop install`:
 ```bash
